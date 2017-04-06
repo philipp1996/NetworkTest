@@ -20,6 +20,7 @@ public class MainActivity extends Activity implements DataDisplay {
     private EditText etIp;
     private MyServer server;
     private Button startServerButton;
+    private Client client;
 
 
     @Override
@@ -37,45 +38,28 @@ public class MainActivity extends Activity implements DataDisplay {
         startClient(addr);
 
     }
+    public void onClickSendMessage(View view)
+    {
+        if(client!=null) {
+            client.sendMessage(" Hallo");
+        }
+    }
+
 
     public void startClient(final String ip) {
+        if(client==null) {
+
+            client = new Client();
+            Thread m_objThread = new Thread(new Runnable() {
+                public void run() {
+                    client.startCLient(getBaseContext(),ip);
+                }
+            });
+
+            m_objThread.start();
+        }
 
 
-        Thread  m_objThreadClient=new Thread(new Runnable() {
-           public void run()
-           {
-               try
-               {
-
-
-                   //Create ClientSocket and sends/recieves Stuff
-
-                   InetAddress addr = InetAddress.getByName(ip);
-                   clientSocket= new Socket(addr,2001);
-                   ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream());
-                   oos.writeObject("CLient says Hello!");
-                   Message serverMessage= Message.obtain();
-                   ObjectInputStream ois =new ObjectInputStream(clientSocket.getInputStream());
-                   serverMessage.obj = (String)ois.readObject();
-
-                   mHandler.sendMessage(serverMessage);
-                   oos.close();
-                   ois.close();
-                   clientSocket.close();
-
-               }
-               catch (Exception e)
-               {
-                   // TODO Auto-generated catch block
-                   e.printStackTrace();
-               }
-
-           }
-       });
-
-
-
-        m_objThreadClient.start();
     }
 
     Handler mHandler = new Handler() {
@@ -113,7 +97,9 @@ public class MainActivity extends Activity implements DataDisplay {
         Toast.makeText(getBaseContext(),"Server: "+message,Toast.LENGTH_SHORT).show();
     }
     public void stopServer(View view){
-        server.stop();
+        if(server!=null) {
+            server.stop();
+        }
         startServerButton.setEnabled(true);
     }
 

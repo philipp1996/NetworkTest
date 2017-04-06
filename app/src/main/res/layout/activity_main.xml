@@ -67,4 +67,14 @@
         android:id="@+id/button3"
         android:onClick="stopServer" />
 
+    <Button
+        android:text="Send Message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView2"
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_alignStart="@+id/textView2"
+        android:id="@+id/button"
+        android:onClick="onClickSendMessage" />
+
 </RelativeLayout>
