@@ -2,6 +2,12 @@ package at.werkstatt.philipp.networktest;
 
 
 
+import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.widget.Toast;
+
 import java.net.*;
 import java.util.*;
 /**
@@ -11,6 +17,11 @@ public class ServerDispatcher extends Thread
 {
     private Vector mMessageQueue = new Vector();
     private Vector mClients = new Vector();
+    private Context c;
+
+    public  ServerDispatcher(Context c){
+        this.c = c;
+    }
 
     /**
      * Adds given client to the server's client list.
@@ -24,6 +35,7 @@ public class ServerDispatcher extends Thread
      * Deletes given client from the server's client list
      * if the client is in the list.
      */
+
     public synchronized void deleteClient(ClientInfo aClientInfo)
     {
         int clientIndex = mClients.indexOf(aClientInfo);
@@ -68,6 +80,8 @@ public class ServerDispatcher extends Thread
      */
     private synchronized void sendMessageToAllClients(String aMessage)
     {
+
+        display(aMessage);
         for (int i=0; i<mClients.size(); i++) {
             ClientInfo clientInfo = (ClientInfo) mClients.get(i);
             clientInfo.mClientSender.sendMessage(aMessage);
@@ -88,6 +102,25 @@ public class ServerDispatcher extends Thread
         } catch (InterruptedException ie) {
             // Thread interrupted. Stop its execution
         }
+    }
+
+
+
+    public void display(final String message)
+    {
+
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        handler.post(new Runnable() {
+
+            @Override
+            public void run() {
+                //Your UI code here
+                Toast.makeText(c,"Que send: "+message,Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
     }
 
 }

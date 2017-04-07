@@ -1,5 +1,6 @@
 package at.werkstatt.philipp.networktest;
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -13,30 +14,30 @@ import java.net.Socket;
 class MyServer {
 
    private ServerSocket m_server;
-   private DataDisplay m_dataDisplay;
+
    private boolean isStopped = false;
    private boolean error=false;
     private  Thread m_objThread;
 
-   MyServer()
+    Context c;
+
+   MyServer(Context c)
    {
        try {
            m_server = new ServerSocket(2002);
+           this.c=c;
        } catch (IOException e) {
            error=true;
            e.printStackTrace();
        }
    }
-   void setEventListener(DataDisplay dataDisplay)
-   {
-       m_dataDisplay=dataDisplay;
-   }
+
    void startListening()
    {
         m_objThread = new Thread(new Runnable() {
            public void run() {
                // Start ServerDispatcher thread
-               ServerDispatcher serverDispatcher = new ServerDispatcher();
+               ServerDispatcher serverDispatcher = new ServerDispatcher(c);
                serverDispatcher.start();
 
                while (!isStopped) {
@@ -53,6 +54,9 @@ class MyServer {
                        clientListener.start();
                        clientSender.start();
                        serverDispatcher.addClient(clientInfo);
+
+
+
                    } catch (IOException ioe) {
                        ioe.printStackTrace();
                    }
@@ -62,12 +66,7 @@ class MyServer {
 
            m_objThread.start();
    }
-   private Handler mHandler = new Handler() {
-       @Override
-       public void handleMessage(Message status) {
-           m_dataDisplay.Display(status.obj.toString());
-       }
-   };
+
 
    private synchronized boolean isStopped() {
        return this.isStopped;

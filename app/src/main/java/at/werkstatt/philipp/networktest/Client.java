@@ -1,6 +1,7 @@
 package at.werkstatt.philipp.networktest;
 
 import android.content.Context;
+import android.os.Handler;
 import android.os.Looper;
 import android.widget.Toast;
 
@@ -50,7 +51,8 @@ public class Client {
             String message;
             while ((message=in.readLine()) != null) {
                 System.out.println("+++++++++++++++++++++++++++++++++");
-              System.out.println(""+message);
+                System.out.println(""+message);
+                display(message,c);
                 System.out.println("+++++++++++++++++++++++++++++++++");
             }
         } catch (IOException ioe) {
@@ -64,6 +66,22 @@ public class Client {
         Sender sender = new Sender(out, message);
         sender.setDaemon(true);
         sender.start();
+
+    }
+    public static void display(final String message, final Context c)
+    {
+
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        handler.post(new Runnable() {
+
+            @Override
+            public void run() {
+                //Your UI code here
+                Toast.makeText(c,"Client get: "+message,Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
     }
 }

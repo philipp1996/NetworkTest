@@ -14,7 +14,7 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 
-public class MainActivity extends Activity implements DataDisplay {
+public class MainActivity extends Activity  {
 
     private Socket clientSocket;
     private EditText etIp;
@@ -52,7 +52,7 @@ public class MainActivity extends Activity implements DataDisplay {
             client = new Client();
             Thread m_objThread = new Thread(new Runnable() {
                 public void run() {
-                    client.startCLient(getBaseContext(),ip);
+                    client.startCLient(getApplicationContext(),ip);
                 }
             });
 
@@ -87,15 +87,11 @@ public class MainActivity extends Activity implements DataDisplay {
 
     public void startServer() {
 
-        server= new MyServer();
-        server.setEventListener(this);
+        server= new MyServer(getApplicationContext());
         server.startListening();
     }
 
-    public void Display(String message)
-    {
-        Toast.makeText(getBaseContext(),"Server: "+message,Toast.LENGTH_SHORT).show();
-    }
+
     public void stopServer(View view){
         if(server!=null) {
             server.stop();
