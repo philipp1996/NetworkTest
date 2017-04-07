@@ -34,8 +34,11 @@ public class Client {
                     new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(
                     new OutputStreamWriter(socket.getOutputStream()));
-            System.out.println("Connected to server " +
-                    SERVER_HOSTNAME + ":" + SERVER_PORT);
+
+            display("Connected to server " +
+                    SERVER_HOSTNAME + ":" + SERVER_PORT,c);
+
+
         } catch (Exception ioe) {
             System.err.println("Can not establish connection to " +
                     SERVER_HOSTNAME + ":" + SERVER_PORT);
