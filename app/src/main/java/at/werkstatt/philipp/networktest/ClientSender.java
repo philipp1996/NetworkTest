@@ -4,8 +4,9 @@ package at.werkstatt.philipp.networktest;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.net.*;
-import java.util.*;
+import java.net.Socket;
+import java.util.Vector;
+
 /**
  * Created by philipp on 06.04.2017.
  */

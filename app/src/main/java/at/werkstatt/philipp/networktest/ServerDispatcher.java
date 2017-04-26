@@ -1,15 +1,15 @@
 package at.werkstatt.philipp.networktest;
 
 
-
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
 import android.widget.Toast;
 
-import java.net.*;
-import java.util.*;
+import java.io.IOException;
+import java.net.Socket;
+import java.util.Vector;
+
 /**
  * Created by philipp on 06.04.2017.
  */
@@ -95,7 +95,7 @@ public class ServerDispatcher extends Thread
     public void run()
     {
         try {
-            while (true) {
+            while (!isInterrupted()) {
                 String message = getNextMessageFromQueue();
                 sendMessageToAllClients(message);
             }
@@ -123,4 +123,17 @@ public class ServerDispatcher extends Thread
 
     }
 
+    public void stopAll() {
+        for (int i=0; i<mClients.size(); i++) {
+            ClientInfo clientInfo = (ClientInfo) mClients.get(i);
+            clientInfo.mClientSender.interrupt();
+            clientInfo.mClientListener.interrupt();
+            try {
+                clientInfo.mSocket.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            deleteClient(clientInfo);
+        }
+    }
 }

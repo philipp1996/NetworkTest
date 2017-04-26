@@ -1,13 +1,8 @@
 package at.werkstatt.philipp.networktest;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -18,6 +13,7 @@ class MyServer {
    private boolean isStopped = false;
    private boolean error=false;
     private  Thread m_objThread;
+    private ServerDispatcher serverDispatcher;
 
     Context c;
 
@@ -26,9 +22,9 @@ class MyServer {
        try {
            m_server = new ServerSocket(2002);
            this.c=c;
-       } catch (IOException e) {
+       } catch (Exception e) {
            error=true;
-           e.printStackTrace();
+           System.err.println(e);
        }
    }
 
@@ -37,10 +33,10 @@ class MyServer {
         m_objThread = new Thread(new Runnable() {
            public void run() {
                // Start ServerDispatcher thread
-               ServerDispatcher serverDispatcher = new ServerDispatcher(c);
+               serverDispatcher = new ServerDispatcher(c);
                serverDispatcher.start();
 
-               while (!isStopped) {
+               while (!isStopped()) {
                    try {
                        Socket socket = m_server.accept();
                        ClientInfo clientInfo = new ClientInfo();
@@ -57,7 +53,7 @@ class MyServer {
 
 
 
-                   } catch (IOException ioe) {
+                   } catch (Exception ioe) {
                        ioe.printStackTrace();
                    }
                }
@@ -74,13 +70,20 @@ class MyServer {
 
    public synchronized void stop(){
        this.isStopped = true;
-
+      // System.out.println("Try to close Server:");
 
        try {
-           this.m_objThread.interrupt();
+           serverDispatcher.stopAll();
+           serverDispatcher.interrupt();
            this.m_server.close();
-       } catch (IOException e) {
-           throw new RuntimeException("Error closing server", e);
+           this.m_objThread.interrupt();
+
+
+
+
+       } catch (Exception e) {
+           System.out.println("SERVER: Exception in stop():");
+           e.printStackTrace();
        }
    }
 }

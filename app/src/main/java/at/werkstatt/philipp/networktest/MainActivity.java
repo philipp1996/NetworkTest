@@ -9,9 +9,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.InetAddress;
 import java.net.Socket;
 
 public class MainActivity extends Activity  {
@@ -42,6 +39,8 @@ public class MainActivity extends Activity  {
     {
         if(client!=null) {
             client.sendMessage(" Hallo");
+        }else{
+            System.err.println(" client == null");
         }
     }
 
@@ -50,13 +49,18 @@ public class MainActivity extends Activity  {
         if(client==null) {
 
             client = new Client();
+
+        }
+        if(!client.isConnected()) {
             Thread m_objThread = new Thread(new Runnable() {
                 public void run() {
-                    client.startCLient(getApplicationContext(),ip);
+                    client.startCLient(getApplicationContext(), ip);
                 }
             });
 
             m_objThread.start();
+        }else{
+            //Already Connected
         }
 
 
