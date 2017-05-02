@@ -1,4 +1,4 @@
-package networktest;
+package at.werkstatt.philipp;
 
 /**
  * Created by Philipp Mödritscher on 06.04.2017.

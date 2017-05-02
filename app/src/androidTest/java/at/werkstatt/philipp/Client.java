@@ -1,5 +1,5 @@
 
-package networktest;
+package at.werkstatt.philipp;
 
 
 import java.io.BufferedReader;

@@ -1,4 +1,4 @@
-package networktest;
+package at.werkstatt.philipp;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.net.Socket;
+
+import at.werkstatt.philipp.networktest.R;
 
 public class MainActivity extends Activity  {
 
