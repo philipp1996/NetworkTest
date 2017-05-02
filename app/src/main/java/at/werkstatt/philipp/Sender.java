@@ -15,6 +15,7 @@ class Sender extends Thread
     private Socket mSocket;
 
 
+
     public Sender(String message, Socket socket)
     {
 
@@ -30,8 +31,7 @@ class Sender extends Thread
     {
         try {
 
-            System.out.println(""+mSocket.isClosed());
-            System.out.println(""+mSocket.isConnected());
+
 
 
 

@@ -47,10 +47,15 @@ public class ServerDispatcher extends Thread
      */
     public synchronized void dispatchMessage(ClientInfo aClientInfo, String aMessage)
     {
-        Socket socket = aClientInfo.mSocket;
-        String senderIP = socket.getInetAddress().getHostAddress();
-        String senderPort = "" + socket.getPort();
-        aMessage = senderIP + ":" + senderPort + " : " + aMessage;
+
+        if(aClientInfo==null) {
+            aMessage = NetworkMessages.SERVER+":" + aMessage;
+        }else{
+            Socket socket = aClientInfo.mSocket;
+            String senderIP = socket.getInetAddress().getHostAddress();
+            String senderPort = "" + socket.getPort();
+            aMessage = senderIP + ":" + senderPort + " : " + aMessage;
+        }
         mMessageQueue.add(aMessage);
         notify();
     }
