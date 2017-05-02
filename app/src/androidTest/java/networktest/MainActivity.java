@@ -1,4 +1,4 @@
-package at.werkstatt.philipp.networktest;
+package networktest;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -39,8 +39,6 @@ public class MainActivity extends Activity  {
     {
         if(client!=null) {
             client.sendMessage(" Hallo");
-        }else{
-            System.err.println(" client == null");
         }
     }
 
@@ -49,18 +47,13 @@ public class MainActivity extends Activity  {
         if(client==null) {
 
             client = new Client();
-
-        }
-        if(!client.isConnected()) {
             Thread m_objThread = new Thread(new Runnable() {
                 public void run() {
-                    client.startCLient(getApplicationContext(), ip);
+                    client.startCLient(ip);
                 }
             });
 
             m_objThread.start();
-        }else{
-            //Already Connected
         }
 
 
@@ -91,7 +84,7 @@ public class MainActivity extends Activity  {
 
     public void startServer() {
 
-        server= new MyServer(getApplicationContext());
+        server= new MyServer();
         server.startListening();
     }
 

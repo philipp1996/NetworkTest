@@ -1,4 +1,4 @@
-package at.werkstatt.philipp.networktest;
+package networktest;
 
 import java.io.BufferedReader;
 import java.io.IOException;

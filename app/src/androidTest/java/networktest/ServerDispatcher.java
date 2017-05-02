@@ -1,12 +1,8 @@
-package at.werkstatt.philipp.networktest;
+package networktest;
 
 
-import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
-import android.widget.Toast;
 
-import java.io.IOException;
+
 import java.net.Socket;
 import java.util.Vector;
 
@@ -17,10 +13,10 @@ public class ServerDispatcher extends Thread
 {
     private Vector mMessageQueue = new Vector();
     private Vector mClients = new Vector();
-    private Context c;
 
-    public  ServerDispatcher(Context c){
-        this.c = c;
+
+    public  ServerDispatcher(){
+
     }
 
     /**
@@ -109,16 +105,7 @@ public class ServerDispatcher extends Thread
     public void display(final String message)
     {
 
-        Handler handler = new Handler(Looper.getMainLooper());
-
-        handler.post(new Runnable() {
-
-            @Override
-            public void run() {
-                //Your UI code here
-                Toast.makeText(c,"Que send: "+message,Toast.LENGTH_SHORT).show();
-            }
-        });
+        System.out.println("SERVER_DISPATCHER: "+message);
 
 
     }
